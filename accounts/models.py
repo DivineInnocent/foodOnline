@@ -26,7 +26,7 @@ class UserManager(BaseUserManager):
 
 
     def get_by_natural_key(self, username):
-        return self.get(username=username)
+        return self.get(**{self.model.USERNAME_FIELD: username})
     
 
 
@@ -91,7 +91,14 @@ class User(AbstractBaseUser):
     
     def has_module_perms(self, app_label):
         return True
-    
+
+
+    def get_role(self):
+        if self.role ==1:
+            user_role = 'Vendor'
+        elif self.role ==2:
+            user_role = 'Customer'
+        return user_role
 
 
 class UserProfile(models.Model):
@@ -112,4 +119,3 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.email
     
-
